@@ -1,10 +1,12 @@
 var express = require('express');
 var GoogleMapsAPI = require('googlemaps');
+var cors = require('cors');
 var app = express()
 var port = process.env.PORT || 3000;
 
+app.options('*', cors());
 
-app.get('/google', function (req, res) {
+app.get('/google/', function (req, res) {
   var publicConfig = {
     key: 'AIzaSyAqpWjz6H7emmTezZQsDs3aqcovG5fqm4w',
     stagger_time:       1000, // for elevationPath
@@ -14,8 +16,8 @@ app.get('/google', function (req, res) {
   var gmAPI = new GoogleMapsAPI(publicConfig);
 
   var params = {
-          origin: '',
-          destination: ''
+          origin: req.query.origin,
+          destination: req.query.destination
         };
 
   gmAPI.directions( params, function(err, result){
