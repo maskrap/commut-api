@@ -1,6 +1,8 @@
 var express = require('express');
 var GoogleMapsAPI = require('googlemaps');
 var app = express()
+var port = process.env.PORT || 3000;
+
 
 app.get('/', function (req, res) {
   var publicConfig = {
@@ -23,6 +25,6 @@ app.get('/', function (req, res) {
   });
 })
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log('NSA is listening to port 3000!')
 })
