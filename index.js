@@ -14,8 +14,8 @@ app.get('/google', function (req, res) {
   var gmAPI = new GoogleMapsAPI(publicConfig);
 
   var params = {
-          origin: 'Chicago, IL',
-          destination: 'Evanston, IL'
+          origin: '',
+          destination: ''
         };
 
   gmAPI.directions( params, function(err, result){
