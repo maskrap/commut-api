@@ -6,7 +6,7 @@ var port = process.env.PORT || 3000;
 
 app.options('*', cors());
 
-app.get('/google/', function (req, res) {
+app.get('/google/', cors(), function (req, res) {
   var publicConfig = {
     key: 'AIzaSyAqpWjz6H7emmTezZQsDs3aqcovG5fqm4w',
     stagger_time:       1000, // for elevationPath
