@@ -4,7 +4,7 @@ var app = express()
 var port = process.env.PORT || 3000;
 
 
-app.get('/', function (req, res) {
+app.get('/google', function (req, res) {
   var publicConfig = {
     key: 'AIzaSyAqpWjz6H7emmTezZQsDs3aqcovG5fqm4w',
     stagger_time:       1000, // for elevationPath
