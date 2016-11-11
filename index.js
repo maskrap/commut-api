@@ -22,7 +22,7 @@ app.get('/flightstats/', cors(), function (req, res) {
 
   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
 
-  request( requestUrl, function (error, response, body) {
+  request( requestUrl, function (error, response, result) {
   if (!error && response.statusCode == 200) {
     res.json({
       "normalizedScore": result.delayIndexes[0].normalizedScore
