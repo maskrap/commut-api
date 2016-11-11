@@ -3,6 +3,7 @@ var GoogleMapsAPI = require('googlemaps');
 var cors = require('cors');
 var app = express()
 var port = process.env.PORT || 3000;
+var request = require('request');
 
 app.options('*', cors());
 
@@ -24,6 +25,24 @@ app.get('/google/', cors(), function (req, res) {
     res.json({
       "duration": result.routes[0].legs[0].duration.text
     })
+  });
+})
+
+//TSA precheck
+app.get('/precheck/', cors(), function (req, res) {
+  var options = {
+    url: "http://apps.tsa.dhs.gov/mytsawebservice/GetAirportCheckpoints.ashx",
+    qs: {
+      ap: req.query.ap,
+      output: "json"
+    }
+  }
+
+  request( options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var parsedBody = JSON.parse(body);
+    res.json(parsedBody[0].airport.precheck);
+    };
   });
 })
 

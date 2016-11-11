@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "cors": "^2.8.1",
-    "googlemaps": "^1.11.1"
+    "googlemaps": "^1.11.1",
+    "request": "^2.78.0"
   }
 }
