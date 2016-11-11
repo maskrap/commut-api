@@ -41,7 +41,9 @@ app.get('/precheck/', cors(), function (req, res) {
   request( options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
     var parsedBody = JSON.parse(body);
-    res.json(parsedBody[0].airport.precheck);
+    res.json(
+        parsedBody[0].airport.precheck
+      );
     };
   });
 })
