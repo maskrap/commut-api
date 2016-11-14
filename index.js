@@ -67,6 +67,8 @@ app.get('/flightstats/', cors(), function (req, res) {
     departureAirport: req.query.departureAirport
   };
 
+  console.log(req.query)
+
   var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
 
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
