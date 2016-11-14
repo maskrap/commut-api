@@ -10,8 +10,8 @@ app.options('*', cors());
 //Calling FlightStats API
 app.get('/flightstats/', cors(), function (req, res) {
   var params = {
-    appKey: process.env.appKey,
     appId: process.env.appId,
+    appKey: process.env.appKey,
     departureAirport: req.query.departureAirport
   };
 
