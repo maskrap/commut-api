@@ -8,7 +8,6 @@ var request = require('request');
 app.options('*', cors());
 
 //Calling FlightStats API
-
 app.get('/flightstats/', cors(), function (req, res) {
   var params = {
     appKey: process.env.appKey,
@@ -16,9 +15,9 @@ app.get('/flightstats/', cors(), function (req, res) {
     departureAirport: req.query.departureAirport
   };
 
-  const FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
 
-  const FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
 
@@ -26,7 +25,7 @@ app.get('/flightstats/', cors(), function (req, res) {
   if (!error && response.statusCode == 200) {
     var parsedResult = JSON.parse(result);
     res.json({
-      "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
+      "normalizedScore": parsedResult.request
     })
     };
   });
