@@ -72,11 +72,11 @@ app.get('/flightstats/', cors(), function (req, res) {
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
+  console.log(requestUrl);
 
   request( requestUrl, function (error, response, result) {
   if (!error && response.statusCode == 200) {
     var parsedResult = JSON.parse(result);
-    console.log(result);
     res.json({
       "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
       })
