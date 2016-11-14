@@ -7,30 +7,9 @@ var request = require('request');
 
 app.options('*', cors());
 
-//Calling FlightStats API
-// app.get('/flightstats/', cors(), function (req, res) {
-//   var params = {
-//     appId: process.env.appId,
-//     appKey: process.env.appKey,
-//     departureAirport: req.query.departureAirport
-//   };
-//
-//   var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
-//
-//   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
-//
-//   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
-//
-//   request( requestUrl, function (error, response, result) {
-//   if (!error && response.statusCode == 200) {
-//     var parsedResult = JSON.parse(result);
-//     res.json({
-//       "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
-//       })
-//     };
-//   });
-//
-// })
+//IATA CODES API
+//82732323-071f-40c8-aab7-b1e292dfbba1
+
 
 //Google API
 app.get('/google/', cors(), function (req, res) {
@@ -77,4 +56,30 @@ app.get('/precheck/', cors(), function (req, res) {
 
 app.listen(port, function () {
   console.log('NSA is listening to port 3000!')
+})
+
+
+Calling FlightStats API
+app.get('/flightstats/', cors(), function (req, res) {
+  var params = {
+    appId: process.env.appId,
+    appKey: process.env.appKey,
+    departureAirport: req.query.departureAirport
+  };
+
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
+
+  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+
+  var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
+
+  request( requestUrl, function (error, response, result) {
+  if (!error && response.statusCode == 200) {
+    var parsedResult = JSON.parse(result);
+    res.json({
+      "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
+      })
+    };
+  });
+
 })
