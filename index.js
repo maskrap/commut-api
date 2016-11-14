@@ -25,8 +25,8 @@ app.get('/flightstats/', cors(), function (req, res) {
   if (!error && response.statusCode == 200) {
     var parsedResult = JSON.parse(result);
     res.json({
-      "normalizedScore": parsedResult.request
-    })
+      "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
+      })
     };
   });
 
