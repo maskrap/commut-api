@@ -76,6 +76,7 @@ app.get('/flightstats/', cors(), function (req, res) {
   request( requestUrl, function (error, response, result) {
   if (!error && response.statusCode == 200) {
     var parsedResult = JSON.parse(result);
+    console.log(result);
     res.json({
       "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
       })
