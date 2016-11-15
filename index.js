@@ -7,7 +7,6 @@ var request = require('request');
 
 app.options('*', cors());
 
-
 //Google API
 app.get('/google/', cors(), function (req, res) {
   var publicConfig = {
@@ -51,36 +50,35 @@ app.get('/precheck/', cors(), function (req, res) {
   });
 })
 
-// //TSA waittime
-// app.get('/WaitTime/', cors(), function (req, res) {
-//   var options = {
-//     url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
-//     qs: {
-//       ap: req.query.ap,
-//       output: "json"
-//     }
-//   }
-//
-//   request( options, function (error, response, body) {
-//   if (!error && response.statusCode == 200) {
-//     var parsedBody = JSON.parse(body);
-//     res.json({
-//         "WaitTime": parsedBody[0].airport.WaitTime
-//       }
-//       );
-//     };
-//   });
-// })
+//TSA waittime
+app.get('/WaitTime/', cors(), function (req, res) {
+  var options = {
+    url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
+    qs: {
+      ap: "PDX",
+      output: "json"
+    }
+  }
+  request( options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    res.json({
+        "WaitTime": body.replace(/\\/g, "")
+      }
+      );
+    };
+  });
+})
 
 
-//Calling FlightStats API
+////////////////////////////FLIGHT STATS APIs//////////////////////////////////
+
+//Calling FlightStats API for normalizedScore
 app.get('/flightstats/', cors(), function (req, res) {
   var params = {
     appId: process.env.appId,
     appKey: process.env.appKey,
     departureAirport: req.query.departureAirport
   };
-
   var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
 
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
@@ -95,8 +93,8 @@ app.get('/flightstats/', cors(), function (req, res) {
       })
     };
   });
-
 })
+
 
 app.listen(port, function () {
   console.log('NSA is listening to port 3000!')
