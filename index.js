@@ -7,9 +7,6 @@ var request = require('request');
 
 app.options('*', cors());
 
-//IATA CODES API
-//82732323-071f-40c8-aab7-b1e292dfbba1
-
 
 //Google API
 app.get('/google/', cors(), function (req, res) {
@@ -54,8 +51,25 @@ app.get('/precheck/', cors(), function (req, res) {
   });
 })
 
-app.listen(port, function () {
-  console.log('NSA is listening to port 3000!')
+//TSA waittime
+app.get('/WaitTime/', cors(), function (req, res) {
+  var options = {
+    url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
+    qs: {
+      ap: req.query.ap,
+      output: "json"
+    }
+  }
+
+  request( options, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var parsedBody = JSON.parse(body);
+    res.json({
+        "WaitTime": parsedBody[0].airport.WaitTime
+      }
+      );
+    };
+  });
 })
 
 
@@ -82,4 +96,8 @@ app.get('/flightstats/', cors(), function (req, res) {
     };
   });
 
+})
+
+app.listen(port, function () {
+  console.log('NSA is listening to port 3000!')
 })
