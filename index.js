@@ -50,24 +50,27 @@ app.get('/precheck/', cors(), function (req, res) {
   });
 })
 
-//TSA waittime
-app.get('/WaitTime/', cors(), function (req, res) {
-  var options = {
-    url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
-    qs: {
-      ap: "PDX",
-      output: "json"
-    }
-  }
-  request( options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    res.json({
-        "WaitTime": body.replace(/\\/g, "")
-      }
-      );
-    };
-  });
-})
+
+// //TSA waittime datetime
+// app.get('/WaitTime/', cors(), function (req, res) {
+//   var options = {
+//     url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
+//     qs: {
+//       ap: "PDX",
+//       output: "json"
+//     }
+//   }
+//   request( options, function (error, response, body) {
+//   if (!error && response.statusCode == 200) {
+//     var parsedBody = JSON.parse(body);
+//     console.log(parsedBody);
+//     res.json({
+//         "WaitTime": parsedBody.WaitTimes[0]
+//       }
+//       );
+//     };
+//   });
+// })
 
 
 ////////////////////////////FLIGHT STATS APIs//////////////////////////////////
@@ -95,6 +98,31 @@ app.get('/flightstats/', cors(), function (req, res) {
   });
 })
 
+//Calling FlightStats API for departure time
+app.get('/departureTime/', cors(), function (req, res) {
+  var params = {
+    appId: process.env.appId,
+    appKey: process.env.appKey,
+    carrierCode: req.query.carrierCode,
+    flightNumber: req.query.flightNumber,
+  };
+
+  // var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
+  // var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+  // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
+  //${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/2016/11/15${FLIGHT_URL2}
+  var requestUrl = `https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/100/arr/2016/11/15?appId=2f2f3e48&appKey=5118cbf9ab0d0478039292e64eddfe3a`;
+
+  request( requestUrl, function (error, response, result) {
+  if (!error && response.statusCode == 200) {
+    var parsedResult = JSON.parse(result);
+    console.log(parsedResult);
+    res.json({
+        "departureTime": parsedResult.flightStatuses[0].departureDate.dateLocal
+      })
+    };
+  });
+})
 
 app.listen(port, function () {
   console.log('NSA is listening to port 3000!')
