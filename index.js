@@ -51,26 +51,26 @@ app.get('/precheck/', cors(), function (req, res) {
   });
 })
 
-//TSA waittime
-app.get('/WaitTime/', cors(), function (req, res) {
-  var options = {
-    url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
-    qs: {
-      ap: req.query.ap,
-      output: "json"
-    }
-  }
-
-  request( options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    var parsedBody = JSON.parse(body);
-    res.json({
-        "WaitTime": parsedBody[0].airport.WaitTime
-      }
-      );
-    };
-  });
-})
+// //TSA waittime
+// app.get('/WaitTime/', cors(), function (req, res) {
+//   var options = {
+//     url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
+//     qs: {
+//       ap: req.query.ap,
+//       output: "json"
+//     }
+//   }
+//
+//   request( options, function (error, response, body) {
+//   if (!error && response.statusCode == 200) {
+//     var parsedBody = JSON.parse(body);
+//     res.json({
+//         "WaitTime": parsedBody[0].airport.WaitTime
+//       }
+//       );
+//     };
+//   });
+// })
 
 
 //Calling FlightStats API
