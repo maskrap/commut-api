@@ -101,7 +101,7 @@ app.get('/departureTime/', cors(), function (req, res) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
       res.json({
-        "departureTimeString": JSON.stringify(parsedResult.flightStatuses[0].departureDate.dateLocal)
+        "departureTimeString": parsedResult.flightStatuses[0].departureDate.dateLocal
       })
     };
   });
