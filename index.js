@@ -76,27 +76,27 @@ app.get('/precheck/', cors(), function (req, res) {
 ////////////////////////////FLIGHT STATS APIs//////////////////////////////////
 
 //Calling FlightStats API for normalizedScore
-app.get('/flightstats/', cors(), function (req, res) {
-  var params = {
-    appId: process.env.appId,
-    appKey: process.env.appKey,
-    departureAirport: req.query.departureAirport
-  };
-  var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
-
-  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
-
-  var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
-
-  request( requestUrl, function (error, response, result) {
-  if (!error && response.statusCode == 200) {
-    var parsedResult = JSON.parse(result);
-    res.json({
-      "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
-      })
-    };
-  });
-})
+// app.get('/flightstats/', cors(), function (req, res) {
+//   var params = {
+//     appId: process.env.appId,
+//     appKey: process.env.appKey,
+//     departureAirport: req.query.departureAirport
+//   };
+//   var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
+//
+//   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+//
+//   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
+//
+//   request( requestUrl, function (error, response, result) {
+//   if (!error && response.statusCode == 200) {
+//     var parsedResult = JSON.parse(result);
+//     res.json({
+//       "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
+//       })
+//     };
+//   });
+// })
 
 //Calling FlightStats API for departure time
 app.get('/departureTime/', cors(), function (req, res) {
@@ -116,10 +116,10 @@ app.get('/departureTime/', cors(), function (req, res) {
   request( requestUrl, function (error, response, result) {
   if (!error && response.statusCode == 200) {
     var parsedResult = JSON.parse(result);
-    console.log(parsedResult);
     res.json({
         "departureTime": parsedResult.flightStatuses[0].departureDate.dateLocal
       })
+      console.log(parsedResult.flightStatuses[0].departureDate.dateLocal);
     };
   });
 })
