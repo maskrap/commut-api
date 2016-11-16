@@ -4,6 +4,8 @@ var cors = require('cors');
 var app = express()
 var port = process.env.PORT || 3000;
 var request = require('request');
+var moment = require('moment');
+moment().format();
 
 app.options('*', cors());
 
@@ -83,22 +85,28 @@ app.get('/departureTime/', cors(), function (req, res) {
     flightNumber: req.query.flightNumber,
   };
 
+  // var now = new Date();
+  // now.getFullYear();
+  // now.getDay();
+  // now.getMonth();
+  // console.log(now.getMonth())
+  // console.log(now.getDay())
+  var CurrentDate = moment().format();
   // var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
   // var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
   // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
   //${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/2016/11/15${FLIGHT_URL2}
   var requestUrl = `https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/100/arr/2016/11/15?appId=2f2f3e48&appKey=5118cbf9ab0d0478039292e64eddfe3a`;
-
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
       res.json({
-        "departureTime": parsedResult.flightStatuses[0].departureDate.dateLocal
+        "departureTime": JSON.stringify(parsedResult.flightStatuses[0].departureDate.dateLocal)
       })
-      // console.log(parsedResult.flightStatuses[0].departureDate.dateLocal);
     };
   });
 })
+
 
 
 ////////////////////Calling FlightStats API for delayTime
