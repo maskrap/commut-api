@@ -59,19 +59,22 @@ app.get('/departureTime/', cors(), function (req, res) {
     appId: '2f2f3e48',
     appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
-    flightNumber: req.query.flightNumber,
+    flightNumber: req.query.flightNumber
   };
 
   var thisDay = moment().format("DD");
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
 
-  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status';
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/AA' + '/100' + '/arr/';
+
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
+  // ${params.carrierCode}
+  // ${params.flightNumber}
+  var requestUrl = `${FLIGHT_URL}${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
 
-
-  var requestUrl = `${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
+  console.log(requestUrl);
 
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
