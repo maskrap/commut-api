@@ -70,11 +70,7 @@ app.get('/departureTime/', cors(), function (req, res) {
 
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
-  // ${params.carrierCode}
-  // ${params.flightNumber}
   var requestUrl = `${FLIGHT_URL}${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
-
-  console.log(requestUrl);
 
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
