@@ -90,14 +90,18 @@ app.get('/delayTime/', cors(), function (req, res) {
     appId: '2f2f3e48',
     appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
-    flightNumber: req.query.flightNumber,
+    flightNumber: req.query.flightNumber
   };
 
-  // var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
-  // var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
-  // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
-  //${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/2016/11/15${FLIGHT_URL2}
-  var requestUrl = `https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/100/arr/2016/11/15?appId=2f2f3e48&appKey=5118cbf9ab0d0478039292e64eddfe3a`;
+  var thisDay = moment().format("DD");
+  var thisMonth = moment().format("M");
+  var thisYear = moment().format("YYYY");
+
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
+
+  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+
+  var requestUrl = `${FLIGHT_URL}${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
 
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
@@ -119,14 +123,20 @@ app.get('/gates/', cors(), function (req, res) {
     appId: '2f2f3e48',
     appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
-    flightNumber: req.query.flightNumber,
+    flightNumber: req.query.flightNumber
   };
 
-  // var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
-  // var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
-  // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
-  //${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/2016/11/15${FLIGHT_URL2}
-  var requestUrl = `https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/100/arr/2016/11/15?appId=2f2f3e48&appKey=5118cbf9ab0d0478039292e64eddfe3a`;
+  var thisDay = moment().format("DD");
+  var thisMonth = moment().format("M");
+  var thisYear = moment().format("YYYY");
+
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
+
+  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+
+  var requestUrl = `${FLIGHT_URL}${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
+
+  console.log(requestUrl);
 
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
