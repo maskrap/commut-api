@@ -56,8 +56,8 @@ app.get('/precheck/', cors(), function (req, res) {
 ////////////////////Calling FlightStats API for departure time
 app.get('/departureTime/', cors(), function (req, res) {
   var params = {
-    appId: process.env.appId,
-    appKey: process.env.appKey,
+    appId: '2f2f3e48',
+    appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
     flightNumber: req.query.flightNumber,
   };
@@ -66,13 +66,12 @@ app.get('/departureTime/', cors(), function (req, res) {
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
 
-  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status';
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
-  // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
-
-  var requestUrl = `${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
+  var requestUrl = `${FLIGHT_URL}/AA/100/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
   console.log(requestUrl);
+
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
@@ -88,8 +87,8 @@ app.get('/departureTime/', cors(), function (req, res) {
 ////////////////////Calling FlightStats API for delayTime
 app.get('/delayTime/', cors(), function (req, res) {
   var params = {
-    appId: process.env.appId,
-    appKey: process.env.appKey,
+    appId: '2f2f3e48',
+    appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
     flightNumber: req.query.flightNumber,
   };
@@ -117,8 +116,8 @@ app.get('/delayTime/', cors(), function (req, res) {
 ///////////////////////Calling FlightStats API for resources
 app.get('/gates/', cors(), function (req, res) {
   var params = {
-    appId: process.env.appId,
-    appKey: process.env.appKey,
+    appId: '2f2f3e48',
+    appKey: '5118cbf9ab0d0478039292e64eddfe3a',
     carrierCode: req.query.carrierCode,
     flightNumber: req.query.flightNumber,
   };
@@ -142,30 +141,6 @@ app.get('/gates/', cors(), function (req, res) {
     };
   });
 })
-
-
-////////////////////Calling FlightStats API for normalizedScore
-// app.get('/flightstats/', cors(), function (req, res) {
-//   var params = {
-//     appId: process.env.appId,
-//     appKey: process.env.appKey,
-//     departureAirport: req.query.departureAirport
-//   };
-//   var FLIGHT_URL = 'https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/'
-//
-//   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
-//
-//   var requestUrl = `${FLIGHT_URL}${params.departureAirport}${FLIGHT_URL2}`;
-//
-//   request( requestUrl, function (error, response, result) {
-//   if (!error && response.statusCode == 200) {
-//     var parsedResult = JSON.parse(result);
-//     res.json({
-//       "normalizedScore": parsedResult.delayIndexes[0].normalizedScore
-//       })
-//     };
-//   });
-// })
 
 
 app.listen(port, function () {
