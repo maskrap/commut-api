@@ -69,7 +69,7 @@ app.get('/departureTime/', cors(), function (req, res) {
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status';
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
-  var requestUrl = `${FLIGHT_URL}/AA/100/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
+  var requestUrl = `${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
   console.log(requestUrl);
 
   request( requestUrl, function (error, response, result) {
