@@ -8,7 +8,6 @@ var moment = require('moment');
 moment().format();
 
 app.options('*', cors());
-var none = "There was an error.";
 
 //Google API
 app.get('/google/', cors(), function (req, res) {
@@ -67,6 +66,7 @@ app.get('/departureTime/', cors(), function (req, res) {
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
   var noDepDate = "No information available";
+  var error = "There was an error.";
 
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
@@ -105,6 +105,7 @@ app.get('/delayTime/', cors(), function (req, res) {
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
   var noDelay = "No delays.";
+  var error = "There was an error.";
 
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
@@ -144,6 +145,7 @@ app.get('/gates/', cors(), function (req, res) {
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
   var noGateInfo = "No gate information available.";
+  var error = "There was an error.";
 
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
