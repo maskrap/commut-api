@@ -8,6 +8,7 @@ var moment = require('moment');
 moment().format();
 
 app.options('*', cors());
+var none = "There was an error.";
 
 //Google API
 app.get('/google/', cors(), function (req, res) {
@@ -65,6 +66,7 @@ app.get('/departureTime/', cors(), function (req, res) {
   var thisDay = moment().format("DD");
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
+  var noDepDate = "No information available";
 
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
@@ -75,9 +77,15 @@ app.get('/departureTime/', cors(), function (req, res) {
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
-      res.json({
-        "departureTimeString": parsedResult.flightStatuses[0].departureDate.dateLocal
-      })
+        if (parsedResult.flightStatuses[0].departureDate == undefined ) {
+          return noDepDate;
+        } else {
+          res.json({
+            "departureTimeString": parsedResult.flightStatuses[0].departureDate.dateLocal
+          })
+        }
+    } else {
+      return error;
     };
   });
 })
@@ -96,8 +104,9 @@ app.get('/delayTime/', cors(), function (req, res) {
   var thisDay = moment().format("DD");
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
+  var noDelay = "No delays.";
 
-  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + 'QX' + '/' + '2081' + '/arr/';
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
   var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
 
@@ -105,18 +114,18 @@ app.get('/delayTime/', cors(), function (req, res) {
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
-        if (parsedResult.flightStatuses[2] == undefined ) {
-          console.log("No delays");
+        if (parsedResult.flightStatuses[0].delays == undefined ) {
+          return noDelay;
         } else {
             res.json({
-              "departureGateDelayMinutes": parsedResult.flightStatuses[2].delays.departureGateDelayMinutes,
-              "departureRunwayDelayMinutes": parsedResult.flightStatuses[2].delays.departureRunwayDelayMinutes,
-              "arrivalGateDelayMinutes": parsedResult.flightStatuses[2].delays.arrivalGateDelayMinutes,
-              "arrivalRunwayDelayMinutes": parsedResult.flightStatuses[2].delays.arrivalRunwayDelayMinutes
+              "departureGateDelayMinutes": parsedResult.flightStatuses[0].delays.departureGateDelayMinutes,
+              "departureRunwayDelayMinutes": parsedResult.flightStatuses[0].delays.departureRunwayDelayMinutes,
+              "arrivalGateDelayMinutes": parsedResult.flightStatuses[0].delays.arrivalGateDelayMinutes,
+              "arrivalRunwayDelayMinutes": parsedResult.flightStatuses[0].delays.arrivalRunwayDelayMinutes
             })
       }
     } else {
-      console.log('Ya dun fucked up');
+      return error;
     };
   });
 })
@@ -134,6 +143,7 @@ app.get('/gates/', cors(), function (req, res) {
   var thisDay = moment().format("DD");
   var thisMonth = moment().format("M");
   var thisYear = moment().format("YYYY");
+  var noGateInfo = "No gate information available.";
 
   var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status' + '/' + params.carrierCode + '/' + params.flightNumber + '/arr/';
 
@@ -141,18 +151,22 @@ app.get('/gates/', cors(), function (req, res) {
 
   var requestUrl = `${FLIGHT_URL}${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
 
-  console.log(requestUrl);
-
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
-      res.json({
-        "departureTerminal": parsedResult.flightStatuses[0].airportResources.departureTerminal,
-        "departureGate": parsedResult.flightStatuses[0].airportResources.departureGate,
-        "arrivalTerminal": parsedResult.flightStatuses[0].airportResources.arrivalTerminal,
-        "arrivalGate": parsedResult.flightStatuses[0].airportResources.arrivalGate,
-        "baggage": parsedResult.flightStatuses[0].airportResources.baggage
-      })
+      if (parsedResult.flightStatuses[0].airportResources == undefined ) {
+        return noGateInfo;
+      } else {
+        res.json({
+          "departureTerminal": parsedResult.flightStatuses[0].airportResources.departureTerminal,
+          "departureGate": parsedResult.flightStatuses[0].airportResources.departureGate,
+          "arrivalTerminal": parsedResult.flightStatuses[0].airportResources.arrivalTerminal,
+          "arrivalGate": parsedResult.flightStatuses[0].airportResources.arrivalGate,
+          "baggage": parsedResult.flightStatuses[0].airportResources.baggage
+        })
+      }
+    } else {
+      return error;
     };
   });
 })
@@ -161,3 +175,5 @@ app.get('/gates/', cors(), function (req, res) {
 app.listen(port, function () {
   console.log('NSA is listening to port 3000!')
 })
+
+// if (parsedResult.flightStatuses[0] && parsedResult.flightStatuses[0].delays === "undefined")
