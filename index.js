@@ -52,29 +52,6 @@ app.get('/precheck/', cors(), function (req, res) {
   });
 })
 
-
-// //TSA waittime datetime
-// app.get('/WaitTime/', cors(), function (req, res) {
-//   var options = {
-//     url: "http://apps.tsa.dhs.gov/MyTSAWebService/GetTSOWaitTimes.ashx",
-//     qs: {
-//       ap: "PDX",
-//       output: "json"
-//     }
-//   }
-//   request( options, function (error, response, body) {
-//   if (!error && response.statusCode == 200) {
-//     var parsedBody = JSON.parse(body);
-//     console.log(parsedBody);
-//     res.json({
-//         "WaitTime": parsedBody.WaitTimes[0]
-//       }
-//       );
-//     };
-//   });
-// })
-
-
 ////////////////////////////FLIGHT STATS APIs//////////////////////////////////
 ////////////////////Calling FlightStats API for departure time
 app.get('/departureTime/', cors(), function (req, res) {
@@ -85,18 +62,17 @@ app.get('/departureTime/', cors(), function (req, res) {
     flightNumber: req.query.flightNumber,
   };
 
-  // var now = new Date();
-  // now.getFullYear();
-  // now.getDay();
-  // now.getMonth();
-  // console.log(now.getMonth())
-  // console.log(now.getDay())
-  var CurrentDate = moment().format();
-  // var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
-  // var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+  var thisDay = moment().format("DD");
+  var thisMonth = moment().format("M");
+  var thisYear = moment().format("YYYY");
+
+  var FLIGHT_URL = 'https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status'
+  var FLIGHT_URL2 = '?appId=' + params.appId + '&appKey=' + params.appKey;
+
   // string interpolation gives error because of appID and appKey pulling error from Heroku. Thus, we have replaced the requestURL for  the time being with a direct link
-  //${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/2016/11/15${FLIGHT_URL2}
-  var requestUrl = `https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/status/AA/100/arr/2016/11/15?appId=2f2f3e48&appKey=5118cbf9ab0d0478039292e64eddfe3a`;
+
+  var requestUrl = `${FLIGHT_URL}/${params.carrierCode}/${params.flightNumber}/arr/${thisYear}/${thisMonth}/${thisDay}${FLIGHT_URL2}`;
+  console.log(requestUrl);
   request( requestUrl, function (error, response, result) {
     if (!error && response.statusCode == 200) {
       var parsedResult = JSON.parse(result);
